@@ -4,9 +4,12 @@ const taskSchema = new mongoose.Schema({
    category: {
       type: String,
       lowercase: true,
-      minLength: 1
    },
-   task: String
+   task: String,
+   completed: {
+      type: Boolean,
+      default: false
+   }
 });
 
 taskSchema.post("save", function(doc, next){
