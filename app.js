@@ -43,7 +43,8 @@ app.get('/', (req, res) => {
       let taskNumber = await TASK.estimatedDocumentCount();
       res.render("home", {
          allTasks,
-         taskNumber
+         taskNumber,
+         displayMode: "light"
       })
    }
 })
@@ -55,7 +56,8 @@ app.get('/active', (req, res) => {
       let taskNumber = await TASK.countDocuments({completed: false})
       res.render("home", {
          allTasks,
-         taskNumber
+         taskNumber,
+         displayMode: "light"
       })
    }
 })
@@ -67,7 +69,8 @@ app.get('/completed', (req, res) => {
       let taskNumber = await TASK.countDocuments({completed: true})
       res.render("home", {
          allTasks,
-         taskNumber
+         taskNumber,
+         displayMode: "light"
       })
    }
 })

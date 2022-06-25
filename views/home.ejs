@@ -5,7 +5,7 @@
 				<h1 class="text-3xl">TODO</h1>
 			</div>
 			<div class="my-auto cursor-pointer" id="changeDisplay">
-				<img class="w-[1.5rem]" src="./dist/assets/images/icon-moon.svg">
+				<img id="displayIcon" class="w-[1.5rem]" src="./dist/assets/images/icon-moon.svg">
 			</div>
 		</div>
 		<div class="add_task taskbox">
@@ -17,6 +17,7 @@
 					<div class="my-auto">
 						<input autocomplete="off" class="my-3 text_input" type="text" name="newTask" id="taskinput" required>
                   <input type="hidden" class="currentPath" name="path" value="/">
+						<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
 					</div>
 				</div>
 			</form>
@@ -26,7 +27,7 @@
 			
          <div class="all_task">
             <% allTasks.forEach(function (item){ %>
-               <div class="flex justify-between taskItem border-b-[1px] py-1">
+               <div class="flex justify-between taskItem border-b-[1px] py-1 draggable" draggable="true">
                   <form class="my-auto" action="/updateOne" method="post">
                      <div class="flex justify-start align-middle">
                         <div class="checkbox_border">
@@ -34,9 +35,10 @@
                            <input type="hidden" class="currentPath" name="path" value="/">
                            <input class="taskStatus" type="hidden" name="taskStatus"  value="<%= item.completed %>">
                            <input class="checkbox_input" type="checkbox" name="finishTask">
+									<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
                         </div>
                         <div class="my-auto">
-                           <p class="w-[340px] py-3 text-ellipsis overflow-hidden ..."><%= item.task %></p>
+                           <p class="task-paragraph text-ellipsis overflow-hidden ..."><%= item.task %></p>
                         </div>
                      </div>
                   </form>
@@ -46,6 +48,7 @@
                               <input type="hidden" name="taskId" value="<%= item._id %>">
                               <input type="hidden" name="taskStatus"  value="<%= item.completed %>">
                               <input type="hidden" class="currentPath" name="path" value="/">
+										<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
                         </div>
                      </div>
                   </form>
@@ -67,6 +70,7 @@
                <form class="my-auto" action="/clearAll" method="post">
                   <input type="hidden" class="currentPath" name="path" value="/">
                   <button type="submit"><span class="active_span my-auto">Clear Completed</span></button>
+						<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
                </form>
 				</div>
 			</div>

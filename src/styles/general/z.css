@@ -1,6 +1,9 @@
+@custom-media --bp-lg-tablet (width <= 600px);
+@custom-media --bp-lg-mobile (width <= 400px);
+
 body{
    position: relative;
-   background-size: 100% 40vh;
+   background-size: 100vw 40vh;
    background-repeat: no-repeat;
 }
 
@@ -56,7 +59,7 @@ body{
 
 main{
    margin: 3rem auto 1rem;
-   width: 450px;
+   width: 500px;
 }
 
 .taskbox{
@@ -107,7 +110,7 @@ main{
    background-position: center;
    background-repeat: no-repeat;
    margin: auto;
-   margin-right: 6px;
+   margin-right: 1rem;
    opacity: 0.3;
    cursor: pointer;
 }
@@ -161,4 +164,73 @@ footer{
 
 .attribution a {
    color: hsl(228, 45%, 44%);
+}
+
+.task-paragraph{
+   width: 380px;
+   padding-top: 0.75rem;
+   padding-bottom: 0.75rem;
+}
+
+@media (--bp-lg-tablet){
+
+   body{
+      background-size: 100vw 250px;
+   }
+	.dark_background{
+      background-image: url("../assets/images/bg-mobile-dark.jpg");
+   }
+	.light_background{
+      background-image: url("../assets/images/bg-mobile-light.jpg");
+   }
+   main{
+      margin: 3rem auto 1rem;
+      width: 375px;
+   }
+   .task-paragraph{
+      width: 275px;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      font-size: 14px;
+   }
+   .checkbox_input{
+      width: 18px;
+      height: 18px;
+   }
+   .delete_input{
+      height: 20px;
+      width: 20px;
+   }
+   .checkbox_border{
+      margin: auto 1.125rem;
+   }
+   .add_task{
+
+      & .text_input{
+         height: 20px;
+         width: 300px;
+      }
+   }
+}
+
+@media (--bp-lg-mobile){
+
+   main{
+      width: 320px;
+   }
+   .task-paragraph{
+      width: 230px;
+      font-size: 13px;
+   }
+   .delete_input{
+      height: 16px;
+      width: 16px;
+   }
+   .add_task{
+
+      & .text_input{
+         height: 20px;
+         width: 265px;
+      }
+   }
 }
