@@ -2,8 +2,7 @@
 
 ![Design preview for the Todo app coding challenge](./design/desktop-preview.jpg)
 
-## Link
-(https://quipo-todo.herokuapp.com/)
+## https://quipo-todo.herokuapp.com/
 
 ## Welcome! 👋
 The classic todo app with a few twists! This app includes a dark/light theme toggle and drag & drop reordering.
