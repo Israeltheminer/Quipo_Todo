@@ -1,0 +1,86 @@
+<body class="light_background">
+	<main>
+		<div class="flex justify-between mt-[5rem] mb-[2.5rem]">
+			<div class="my-auto">
+				<h1 class="text-3xl">TODO</h1>
+			</div>
+			<div class="my-auto cursor-pointer" id="changeDisplay">
+				<img class="w-[1.5rem]" src="./dist/assets/images/icon-moon.svg">
+			</div>
+		</div>
+		<div class="add_task taskbox">
+			<form action="/" method="post" id="addTaskForm">
+				<div class="flex justify-start">
+					<div class="checkbox_border">
+						<input class="checkbox_input" type="checkbox" name="addTask" id="addTaskCheckbox">
+					</div>
+					<div class="my-auto">
+						<input autocomplete="off" class="my-3 text_input" type="text" name="newTask" id="taskinput" required>
+                  <input type="hidden" class="currentPath" name="path" value="/">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="task_details taskbox shadow-xl mb-[3rem]">
+			
+         <div class="all_task">
+            <% allTasks.forEach(function (item){ %>
+               <div class="flex justify-between taskItem border-b-[1px] py-1">
+                  <form class="my-auto" action="/updateOne" method="post">
+                     <div class="flex justify-start align-middle">
+                        <div class="checkbox_border">
+                           <input type="hidden" name="taskId" value="<%= item._id %>">
+                           <input type="hidden" class="currentPath" name="path" value="/">
+                           <input class="taskStatus" type="hidden" name="taskStatus"  value="<%= item.completed %>">
+                           <input class="checkbox_input" type="checkbox" name="finishTask">
+                        </div>
+                        <div class="my-auto">
+                           <p class="w-[340px] py-3 text-ellipsis overflow-hidden ..."><%= item.task %></p>
+                        </div>
+                     </div>
+                  </form>
+                  <form class="my-auto" class="deleteOneForm" action="/deleteOne" method="post">
+                     <div class="flex justify-center align-middle h-[100%]" >
+                           <div class="delete_input deleteOneButton">
+                              <input type="hidden" name="taskId" value="<%= item._id %>">
+                              <input type="hidden" name="taskStatus"  value="<%= item.completed %>">
+                              <input type="hidden" class="currentPath" name="path" value="/">
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            <% }) %>
+			</div>
+
+
+			<div class="flex justify-around align-middle py-3">
+				<div class="task_info flex align-middle">
+					<span class="my-auto"><%= taskNumber %> items left</span>
+				</div>
+				<div class="task_links flex align-middle justify-between gap-4">
+					<span class="active_span my-auto" id="home_page"><a class="links" href="/">All</a></span>
+					<span class="active_span my-auto" id="active_page"><a class="links" href="/active">Active</a></span>
+					<span class="active_span my-auto" id="completed_page"><a class="links" href="/completed">Completed</a></span>
+				</div>
+				<div class="clear_task flex align-middle">
+               <form class="my-auto" action="/clearAll" method="post">
+                  <input type="hidden" class="currentPath" name="path" value="/">
+                  <button type="submit"><span class="active_span my-auto">Clear Completed</span></button>
+               </form>
+				</div>
+			</div>
+		</div>
+	</main>
+	<div class="mx-auto max-w-max pb-[3rem]">
+		<span>Drag and drop to reorder list</span>
+	</div>
+
+	<footer>
+		<div class="attribution">
+		  Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+		  Coded by <a href="#">Iyanda Israel</a>.
+		</div>
+	</footer>
+  <script src="dist/scripts/main.js"></script>
+</body>

@@ -1,10 +1,6 @@
 const mongoose = require("mongoose")
 
 const taskSchema = new mongoose.Schema({
-   category: {
-      type: String,
-      lowercase: true,
-   },
    task: String,
    completed: {
       type: Boolean,

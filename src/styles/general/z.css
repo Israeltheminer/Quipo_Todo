@@ -1,40 +1,86 @@
-.attribution { font-size: 11px; text-align: center; }
-.attribution a { color: hsl(228, 45%, 44%); }
-
 body{
-   background-color:  rgb(22, 23, 34);
+   position: relative;
+   background-size: 100% 40vh;
+   background-repeat: no-repeat;
+}
+
+.dark_background{
+   background-image: url("../assets/images/bg-desktop-dark.jpg");
+   background-color: rgb(22, 23, 34);
+   
+   & .taskbox{
+      background-color:  rgb(37, 39, 60);
+   }
+   & .taskItem{
+      border-color: rgb(77, 80, 102);
+      
+      & .checkbox_input:hover{
+         background-image: linear-gradient(rgb(37, 39, 60), rgb(37, 39, 60)), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
+      }
+   }
+
+   & .checkbox_input{
+      background-image: 
+         linear-gradient(to bottom right, rgb(37, 39, 60), rgb(37, 39, 60)), 
+         linear-gradient(to bottom right, rgb(77, 80, 102), rgb(77, 80, 102));
+   }
+   & .delete_input{
+      background-image: url("../assets/images/icon-dark-cross.svg");
+   }
+}
+
+.light_background{
+   background-image: url("../assets/images/bg-desktop-light.jpg");
+   background-color: rgb(245, 245, 245);
+
+   & .taskbox{
+      background-color: rgb(255, 255, 255);
+   } 
+   & .taskItem{
+      border-color: rgb(197, 198, 199);
+      
+      & .checkbox_input:hover{
+         background-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255)), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
+      }
+   }
+   & .checkbox_input{
+      background-image: 
+         linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 255, 255)), 
+         linear-gradient(to bottom right, rgb(105, 108, 130), rgb(139, 140, 154));
+   }
+   & .delete_input{
+      background-image: url("../assets/images/icon-light-cross.svg");
+      opacity: 0.8;
+   }
 }
 
 main{
-   margin: 3rem auto 3rem;
+   margin: 3rem auto 1rem;
    width: 450px;
 }
 
 .taskbox{
-   background-color:  rgb(37, 39, 60);
    border-radius: 4px;
-   margin-top: 2rem;
-   margin-bottom: 2rem;
+   margin-top: 1.25rem;
 }
 
 .add_task{
    
    & .checkbox_input{
-      background-image: url("../public/assets/images/icon-check.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
-      background-position: center;
+      background-image: url("../assets/images/icon-plus.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
       background-repeat: no-repeat;
+      background-position: center;
    }
 
-   & .checkbox_border:hover{
-      background-image: linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
+   & .checkbox_input:checked{
+      background-image: url("../assets/images/icon-check.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
    }
-      
+
    & .text_input{
       background-color: transparent;
       border: 0px solid;
       height: 30px;
       width: 375px;
-      color: #CCC;
    }
 
    & input[type=text]:focus{
@@ -45,21 +91,29 @@ main{
 .taskItem{
    border-color: rgb(77, 80, 102);
    width: 100%;
+
+   & .checkbox_input:hover.checkbox_input:checked{
+      background-image: url("../assets/images/icon-check.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
+   }
 }
 
-.all_task{
-   & .checkbox_border{
-      margin: auto 1rem;
-   }
+.checkbox_border{
+   margin: auto 1.5rem;
 }
 
 .delete_input{
    height: 30px;
    width: 30px;
-   background-image: url("../public/assets/images/icon-cross.svg");
    background-position: center;
    background-repeat: no-repeat;
-   margin: auto 0.75rem;
+   margin: auto;
+   margin-right: 6px;
+   opacity: 0.3;
+   cursor: pointer;
+}
+
+.delete_input:hover{
+   opacity: 0.9;
 }
 
 .checkbox_input{
@@ -67,10 +121,7 @@ main{
    height: 22px;
    border-radius: 50%;
    vertical-align: middle;
-   border: 1.5px double transparent;
-   background-image: 
-      linear-gradient(to bottom right, rgb(37, 39, 60), rgb(37, 39, 60)), 
-      linear-gradient(to bottom right, rgb(77, 80, 102), rgb(77, 80, 102));
+   border: 2px double transparent;
    appearance: none;
    -webkit-appearance: none;
    outline: none;
@@ -80,12 +131,34 @@ main{
    position: relative;
 }
 
-.checkbox_input:hover{
-   background-image: linear-gradient(rgb(37, 39, 60), rgb(37, 39, 60)), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
-}
-
 .checkbox_input:checked {
-   background-image: url("../public/assets/images/icon-check.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
+   background-image: url("../assets/images/icon-check.svg"), linear-gradient(to bottom right, rgb(87, 221, 255), rgb(192, 88, 243));
    background-position: center;
    background-repeat: no-repeat;
+}
+
+.blue_link{
+   color: hsl(220, 98%, 61%);
+   opacity: 1;   
+}
+
+.cross_paragraph{
+   opacity: 0.5;
+   text-decoration: line-through;
+}
+
+footer{
+   position: absolute;
+   bottom: 0;
+   left: 50%;
+   transform: translate(-50%);
+}
+
+.attribution { 
+   font-size: 11px;
+   text-align: center; 
+}
+
+.attribution a {
+   color: hsl(228, 45%, 44%);
 }

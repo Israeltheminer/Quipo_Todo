@@ -1,16 +1,46 @@
-body{
+.dark_background{
    color: rgb(202, 205, 232);
+
+   & h1{
+      color: rgb(228, 229, 241);
+   }
+   
+   & input{
+      color: rgb(202, 205, 232);
+   }
+}
+
+.light_background{
+   color: rgb(84, 84, 100);
+
+   & h1{
+      color: rgb(255, 255, 255);
+   }
+   
+   & input{
+      color: rgb(84, 84, 100);
+   }
+}
+
+body{
    font-family: 'Josefin Sans', sans-serif;
-   font-size: 18px;
+   font-weight: 300;
+}
+
+p{
+   font-size: 17px;
+}
+
+span{
+   font-size: 13px;
+   opacity: 0.7;
+}
+
+.active_span:hover{
+   opacity: 1;
 }
 
 h1{
    font-weight: 700;
    letter-spacing: 10px;
-   color: hsl(236, 33%, 92%);
-
-}
-
-input{
-   color: rgb(202, 205, 232);
 }

@@ -5,13 +5,15 @@ const cors = require("cors")
 const port = 7070 || process.env.PORT
 const path = require('path');
 const mongoose = require("mongoose")
-const GENERAL = require("./Schemas/general")
+const TASK = require("./Schemas/task")
 const _ = require("lodash")
+const expressLayouts = require("express-ejs-layouts")
+
 
 connect()
 async function connect() {
    try {
-      await mongoose.connect(process.env.GENERAL_DATABASE_URI)
+      await mongoose.connect(process.env.TASK_DATABASE_URI)
       console.log("Connection Successful")
    } catch (error) {
       console.log("Connection Unsuccessful")
@@ -19,91 +21,125 @@ async function connect() {
    }
 }
 
+
 const app = express()
-const PUBLIC = path.join(__dirname , "./public")
+const DIST = path.join(__dirname , "dist")
 
-app.use(cors())
-app.use('/public', express.static(PUBLIC))
-app.use(bodyParser.urlencoded({ extended: false }))
 
+// Set View engine
+app.use(expressLayouts)
+app.set('layout', './layouts/general')
 app.set('view engine', 'ejs');
 
-// Home Get route
+app.use(cors())
+app.use('/dist', express.static(DIST))
+app.use(bodyParser.urlencoded({ extended: false }))
+
+
 app.get('/', (req, res) => {
-   getTask()
-   async function getTask(){
-      try {
-         let generalTaskInfo = await GENERAL.find({category: { $regex: "general", $options: 'i' }})
-         res.render("list", {
-            listTitle: "Today",
-            allTasks: generalTaskInfo
-         })
-      } catch (error) {
-         console.log(error)
-      }
+   findTask()
+   async function findTask(){
+      let allTasks = await TASK.find()
+      let taskNumber = await TASK.estimatedDocumentCount();
+      res.render("home", {
+         allTasks,
+         taskNumber
+      })
+   }
+})
+
+app.get('/active', (req, res) => {
+   findTask()
+   async function findTask(){
+      let allTasks = await TASK.find({completed: false})
+      let taskNumber = await TASK.countDocuments({completed: false})
+      res.render("home", {
+         allTasks,
+         taskNumber
+      })
+   }
+})
+
+app.get('/completed', (req, res) => {
+   findTask()
+   async function findTask(){
+      let allTasks = await TASK.find({completed: true})
+      let taskNumber = await TASK.countDocuments({completed: true})
+      res.render("home", {
+         allTasks,
+         taskNumber
+      })
    }
 })
 
 
-// Home post route (For adding new tasks)
+
 app.post("/", (req, res) => {
-   let item = req.body.newTask
-   let taskList = req.body.list
-   console.log(item)
-   postTask()
-   async function postTask(){
+   let path = req.body.path
+   let newTask = req.body.newTask
+
+   addTask()
+   async function addTask(){
       try {
-         if(taskList=="Today"){
-            await GENERAL.create({ category: "general", task: item })
-         } else{
-            await GENERAL.create({ category: taskList, task: item })
+         if(path === "/"){
+            await TASK.create({ task: newTask })
+         } else if(path === "/active"){
+            await TASK.create({ task: newTask })
          }
-         if(taskList=="Today"){
-            res.redirect("/")
-         } else{   
-            res.redirect(`/${taskList}`)
-         }
+         res.redirect(path)
       } catch (error) {
          console.log(error)
       }
    }
 })
 
-// Home post route (For deleting old tasks)
-app.post("/delete", (req, res)=> {
-   let taskID = req.body.taskID
-   let taskList = req.body.list
+
+app.post("/updateOne", (req, res)=> {
+   let path = req.body.path
+   let taskId = req.body.taskId
+   let taskStatus = req.body.taskStatus
+   updateTask()
+   async function updateTask(){
+      try {
+         if(taskStatus=="true"){
+            await TASK.updateOne({ _id: taskId }, {$set: {completed: false}})
+         }else{
+            await TASK.updateOne({ _id: taskId }, {$set: {completed: true}})
+         }
+         res.redirect(path)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+})
+
+
+app.post("/deleteOne", (req, res)=> {
+   let path = req.body.path
+   let taskId = req.body.taskId
    deleteTask()
    async function deleteTask(){
       try {
-         await GENERAL.deleteOne({ _id: taskID })
-         if(taskList=== "Today"){
-            res.redirect("/")
-         } else{   
-            res.redirect(`/${taskList}`)
-         }
+         await TASK.deleteOne({ _id: taskId })
+         res.redirect(path)
       } catch (error) {
          console.log(error)
       }
    }
 })
 
-// Other get Route (Fetches the info from the mongo database)
-app.get("/:category", (req, res) => {
-   getTask()
-   async function getTask(){
+
+app.post("/clearAll", (req, res)=> {
+   let path = req.body.path
+   deleteTask()
+   async function deleteTask(){
       try {
-         let allTasks = await GENERAL.find({category: { $regex: `${req.params.category}`, $options: 'i' } })
-         let listTitle = _.capitalize(req.params.category)
-         res.render("list", {
-            listTitle,
-            allTasks
-         })
+         await TASK.deleteMany({ completed: true })
+         res.redirect(path)
       } catch (error) {
          console.log(error)
       }
    }
 })
-
 
 app.listen(port, () => console.log(`Server listening on port ${port}`) );

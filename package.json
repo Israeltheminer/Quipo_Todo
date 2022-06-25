@@ -4,7 +4,7 @@
   "description": "The classic todo app with a few twists! This app includes a dark/light theme toggle and drag & drop reordering.",
   "main": "app.js",
   "scripts": {
-    "postcss:watch": "postcss src/styles/style.css -d public --watch",
+    "postcss:watch": "postcss src/styles/style.css -d dist/styles --watch",
     "webpack:build": "webpack --mode=production",
     "webpack": "webpack --mode=development",
     "webpack:dev": "webpack --mode=development --watch"
@@ -31,6 +31,7 @@
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.4.0"
