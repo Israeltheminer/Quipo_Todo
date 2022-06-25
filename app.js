@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
-const port = 7070 || process.env.PORT
+const port = process.env.PORT || 7070
 const path = require('path');
 const mongoose = require("mongoose")
 const TASK = require("./Schemas/task")
