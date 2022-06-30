@@ -92,7 +92,7 @@ draggablesContainer.addEventListener("dragover", (event)=> {
    if(afterElement==null){
       draggablesContainer.appendChild(draggable)
    } else{
-      draggablesContainer.insertBefore(draggable, afterElement) 
+      draggablesContainer.insertBefore(draggable, afterElement)
    }
 })
 
