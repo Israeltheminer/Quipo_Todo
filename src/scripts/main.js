@@ -82,6 +82,27 @@ draggables.forEach(item=> {
    })
    item.addEventListener("dragend", ()=> {
       item.classList.remove("dragging")
+      
+      let arrangementPreference = []
+      let taskNumber = $(".taskItem").length
+      for(let i = 0; i < taskNumber; i++){
+         let taskDetails = {
+            updateOne:{
+               "filter": {
+                  "_id": $(`.taskItem:nth-child(${i+1})`).find(".taskID").val()
+               },
+               "update" : {
+                  $set: {
+                     position: (i+1)
+                  }
+               }     
+            }
+         }
+         arrangementPreference.push(taskDetails)
+      }
+      let stringedPreference = JSON.stringify(arrangementPreference)
+      $(".taskItem").find(".userPreference").val(stringedPreference)
+      $(".add_task").find(".userPreference").val(stringedPreference)
    })
 })
 

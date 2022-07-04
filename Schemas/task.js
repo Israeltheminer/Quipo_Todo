@@ -5,6 +5,14 @@ const taskSchema = new mongoose.Schema({
    completed: {
       type: Boolean,
       default: false
+   },
+   position: {
+      type: Number,
+      default: 0
+   },
+   createdAt: {
+      type: Date,
+      default: Date.now
    }
 });
 
