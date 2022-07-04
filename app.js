@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.get('/', (req, res) => {
    findTask()
    async function findTask(){
-      let allTasks = await TASK.find()
+      let allTasks = await TASK.find().sort('position -createdAt')
       let taskNumber = await TASK.estimatedDocumentCount();
       res.render("home", {
          allTasks,
@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 app.get('/active', (req, res) => {
    findTask()
    async function findTask(){
-      let allTasks = await TASK.find({completed: false})
+      let allTasks = await TASK.find({completed: false}).sort('position -createdAt')
       let taskNumber = await TASK.countDocuments({completed: false})
       res.render("home", {
          allTasks,
@@ -65,7 +65,7 @@ app.get('/active', (req, res) => {
 app.get('/completed', (req, res) => {
    findTask()
    async function findTask(){
-      let allTasks = await TASK.find({completed: true})
+      let allTasks = await TASK.find({completed: true}).sort('position -createdAt')
       let taskNumber = await TASK.countDocuments({completed: true})
       res.render("home", {
          allTasks,
@@ -80,14 +80,30 @@ app.get('/completed', (req, res) => {
 app.post("/", (req, res) => {
    let path = req.body.path
    let newTask = req.body.newTask
-
-   addTask()
-   async function addTask(){
+   let stringedPreference = req.body.userPreference
+   if(stringedPreference === ''){
+      addTask()
+   } else{
+      let arrangementPreference = JSON.parse(stringedPreference)
+      addTask(arrangementPreference)
+   }
+   async function addTask(option){
       try {
-         if(path === "/"){
-            await TASK.create({ task: newTask })
-         } else if(path === "/active"){
-            await TASK.create({ task: newTask })
+         // Wriiten this way to avoid posting from completed
+         if(option==null){
+            if(path === "/"){
+               await TASK.create({ task: newTask })
+            } else if(path === "/active"){
+               await TASK.create({ task: newTask })
+            }
+         } else{
+            if(path === "/"){
+               await TASK.create({ task: newTask })
+               await TASK.bulkWrite(option)
+            } else if(path === "/active"){
+               await TASK.create({ task: newTask })
+               await TASK.bulkWrite(option)
+            }
          }
          res.redirect(path)
       } catch (error) {
@@ -101,13 +117,29 @@ app.post("/updateOne", (req, res)=> {
    let path = req.body.path
    let taskId = req.body.taskId
    let taskStatus = req.body.taskStatus
-   updateTask()
-   async function updateTask(){
+   let stringedPreference = req.body.userPreference
+   if(stringedPreference === ''){
+      updateTask()
+   } else{
+      let arrangementPreference = JSON.parse(stringedPreference)
+      updateTask(arrangementPreference)
+   }
+   async function updateTask(option){
       try {
-         if(taskStatus=="true"){
-            await TASK.updateOne({ _id: taskId }, {$set: {completed: false}})
-         }else{
-            await TASK.updateOne({ _id: taskId }, {$set: {completed: true}})
+         if(option==null){
+            if(taskStatus=="true"){
+               await TASK.updateOne({ _id: taskId }, {$set: {completed: false}})
+            }else{
+               await TASK.updateOne({ _id: taskId }, {$set: {completed: true}})
+            }
+         } else{
+            if(taskStatus=="true"){
+               await TASK.updateOne({ _id: taskId }, {$set: {completed: false}})
+               await TASK.bulkWrite(option)
+            }else{
+               await TASK.updateOne({ _id: taskId }, {$set: {completed: true}})
+               await TASK.bulkWrite(option)
+            }
          }
          res.redirect(path)
       } catch (error) {
@@ -120,10 +152,22 @@ app.post("/updateOne", (req, res)=> {
 app.post("/deleteOne", (req, res)=> {
    let path = req.body.path
    let taskId = req.body.taskId
+   let stringedPreference = req.body.userPreference
+   if(stringedPreference === ''){
+      deleteTask()
+   } else{
+      let arrangementPreference = JSON.parse(stringedPreference)
+      deleteTask(arrangementPreference)
+   }
    deleteTask()
-   async function deleteTask(){
+   async function deleteTask(option){
       try {
-         await TASK.deleteOne({ _id: taskId })
+         if(option==null){
+            await TASK.deleteOne({ _id: taskId })
+         } else{
+            await TASK.deleteOne({ _id: taskId })
+            await TASK.bulkWrite(option)
+         }
          res.redirect(path)
       } catch (error) {
          console.log(error)
