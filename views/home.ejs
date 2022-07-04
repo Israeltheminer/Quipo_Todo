@@ -15,8 +15,9 @@
 						<input class="checkbox_input" type="checkbox" name="addTask" id="addTaskCheckbox">
 					</div>
 					<div class="my-auto">
-						<input autocomplete="off" class="my-3 text_input" type="text" name="newTask" id="taskinput" required>
+						<input autocomplete="off" class="my-3 text_input" type="text" name="newTask" id="taskinput" minlength="2" required>
                   <input type="hidden" class="currentPath" name="path" value="/">
+						<input class="userPreference" type="hidden" name="userPreference" value="">
 						<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
 					</div>
 				</div>
@@ -31,14 +32,14 @@
                   <form class="my-auto" action="/updateOne" method="post">
                      <div class="flex justify-start align-middle">
                         <div class="checkbox_border">
-                           <input type="hidden" name="taskId" value="<%= item._id %>">
+                           <input type="hidden" name="taskId" value="<%= item._id %>" class="taskID">
                            <input type="hidden" class="currentPath" name="path" value="/">
                            <input class="taskStatus" type="hidden" name="taskStatus"  value="<%= item.completed %>">
                            <input class="checkbox_input" type="checkbox" name="finishTask">
-									<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
+									<input class="userPreference" type="hidden" name="userPreference" value="">
                         </div>
                         <div class="my-auto">
-                           <p class="task-paragraph text-ellipsis overflow-hidden ..."><%= item.task %></p>
+                           <p class="task-paragraph taskContent text-ellipsis overflow-hidden ..."><%= item.task %></p>
                         </div>
                      </div>
                   </form>
@@ -48,7 +49,7 @@
                               <input type="hidden" name="taskId" value="<%= item._id %>">
                               <input type="hidden" name="taskStatus"  value="<%= item.completed %>">
                               <input type="hidden" class="currentPath" name="path" value="/">
-										<input class="currentMode" type="hidden" name="currentMode" value="<%= displayMode%>">
+										<input class="userPreference" type="hidden" name="userPreference" value="">
                         </div>
                      </div>
                   </form>
